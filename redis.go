@@ -25,6 +25,7 @@ type RedisConfig struct {
 	Password    string // 密码
 	LogFilePath string // 日志路径
 	Debug       bool   // 是否为debug模式
+	PoolSize    int    // 连接池连接数
 }
 
 // 创建Redis操作对象
@@ -34,21 +35,28 @@ func New(config RedisConfig) *Redis {
 	// 初始化日志
 	if config.LogFilePath != "" {
 		r.logFilePath = config.LogFilePath
-		r.log = zdpgo_log.New(config.LogFilePath)
 	} else {
 		r.logFilePath = "zdpgo_redis.log"
-		r.log = zdpgo_log.New(r.logFilePath)
 	}
+	logConfig := zdpgo_log.LogConfig{
+		Debug:       config.Debug,
+		LogFilePath: r.logFilePath,
+	}
+	r.log = zdpgo_log.New(logConfig)
 
 	// 初始化debug模式
 	r.log.SetDebug(config.Debug)
 	r.debug = config.Debug
 
 	// 初始化Redis连接
+	if config.PoolSize == 0 {
+		config.PoolSize = 33 // 默认是33个
+	}
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", config.Host, config.Port), // 连接地址
 		Password: config.Password,                                // 密码
 		DB:       config.Database,                                // 数据库
+		PoolSize: config.PoolSize,                                // 连接池中的连接个数
 	})
 	r.db = rdb
 
@@ -69,7 +77,7 @@ func (r *Redis) IsDebug() bool {
 func (r *Redis) Status() bool {
 	pong, err := r.db.Ping(context.Background()).Result()
 	if err != nil {
-		r.log.Error("redis连接失败：", pong, err)
+		r.log.Error("redis连接失败：", "ping", pong, "err", err)
 		return false
 	}
 	return true
