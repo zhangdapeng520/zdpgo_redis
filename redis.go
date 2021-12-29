@@ -1,6 +1,7 @@
 package zdpgo_redis
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/go-redis/redis/v8"
@@ -63,4 +64,13 @@ func (r *Redis) SetDebug(debug bool) {
 // 是否为debug模式
 func (r *Redis) IsDebug() bool {
 	return r.debug
+}
+
+func (r *Redis) Status() bool {
+	pong, err := r.db.Ping(context.Background()).Result()
+	if err != nil {
+		r.log.Error("redis连接失败：", pong, err)
+		return false
+	}
+	return true
 }
