@@ -19,10 +19,10 @@ func main() {
 	fmt.Println(r.Status())
 
 	// 从右边追加值
-	// r.RPush("list", 1, 2, 3)
+	r.RPush("list", 1, 2, 3)
 
 	// 从左边追加值
-	// r.LPush("list", 3, 2, 1)
+	r.LPush("list", 3, 2, 1)
 
 	// 获取列表长度
 	result1, err := r.LLen("list")
