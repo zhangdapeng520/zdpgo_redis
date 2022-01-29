@@ -6,19 +6,19 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-// 发布消息
+// Publish 发布消息
 func (r *Redis) Publish(key, value string) error {
 	err := r.db.Publish(context.Background(), key, value).Err()
 	return err
 }
 
-// 订阅消息
+// Subscribe 订阅消息
 func (r *Redis) Subscribe(key string) *redis.PubSub {
 	ps := r.db.Subscribe(context.Background(), key)
 	return ps
 }
 
-// 获取消息
+// ReceiveMessage 获取消息
 func (r *Redis) ReceiveMessage(ps *redis.PubSub) (*redis.Message, error) {
 	msg, err := ps.ReceiveMessage(context.Background())
 	if err != nil {
@@ -28,7 +28,7 @@ func (r *Redis) ReceiveMessage(ps *redis.PubSub) (*redis.Message, error) {
 	return msg, err
 }
 
-// 关闭订阅
+// CloseSubscribe 关闭订阅
 func (r *Redis) CloseSubscribe(ps *redis.PubSub) {
 	err := ps.Close()
 	if err != nil {

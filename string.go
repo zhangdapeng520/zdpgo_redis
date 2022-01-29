@@ -9,7 +9,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-// 根据键获取值
+// Get 根据键获取值
 func (r *Redis) Get(key string) (value string, err error) {
 	value, err = r.db.Get(context.Background(), key).Result()
 	info := ""
@@ -29,7 +29,7 @@ func (r *Redis) Get(key string) (value string, err error) {
 	return
 }
 
-// 设置值，自定义过期时间
+// SetExpire 设置值，自定义过期时间
 func (r *Redis) SetExpire(key string, value interface{}, expire time.Duration) {
 	err := r.db.Set(context.Background(), key, value, expire).Err()
 	if err != nil {
@@ -37,12 +37,12 @@ func (r *Redis) SetExpire(key string, value interface{}, expire time.Duration) {
 	}
 }
 
-// 根据键设置值，过期时间默认为3小时
+// Set 根据键设置值，过期时间默认为30天
 func (r *Redis) Set(key string, value interface{}) {
-	r.SetExpire(key, value, 3*60*60*time.Second)
+	r.SetExpire(key, value, 30*24*60*60*time.Second)
 }
 
-// 同时获取多个键对应的值
+// MGet 同时获取多个键对应的值
 func (r *Redis) MGet(keys ...string) ([]interface{}, error) {
 	result, err := r.db.MGet(context.Background(), keys...).Result()
 	if err != nil {
@@ -51,32 +51,32 @@ func (r *Redis) MGet(keys ...string) ([]interface{}, error) {
 	return result, err
 }
 
-// 自增1
-func (r *Redis) Incr(key string) {
+// Add1 自增1
+func (r *Redis) Add1(key string) {
 	r.db.Incr(context.Background(), key)
 }
 
-// 自增n
-func (r *Redis) IncrBy(key string, n int64) {
+// AddN 自增n
+func (r *Redis) AddN(key string, n int64) {
 	r.db.IncrBy(context.Background(), key, n)
 }
 
-// 自减1
-func (r *Redis) Decr(key string) {
+// Sub1 自减1
+func (r *Redis) Sub1(key string) {
 	r.db.Decr(context.Background(), key)
 }
 
-// 自减n
-func (r *Redis) DecrBy(key string, n int64) {
+// SubN 自减n
+func (r *Redis) SubN(key string, n int64) {
 	r.db.DecrBy(context.Background(), key, n)
 }
 
-// 追加字符串
+// Append 追加字符串
 func (r *Redis) Append(key string, value string) {
 	r.db.Append(context.Background(), key, value)
 }
 
-// 截取字符串
+// Substr 截取字符串
 func (r *Redis) Substr(key string, start, end int) (string, error) {
 	result, err := r.db.Do(context.Background(), "substr", key, start, end-1).Result()
 	if err != nil {
