@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
-	"github.com/rs/xid"
 )
 
 // HandStreamFunc 处理流中数据的方法
@@ -43,7 +42,7 @@ func (r *Redis) SubStream(config SubStreamConfig) (err error) {
 
 	// 现在可以使用XREADGROUP来监听流中消息，并使用一个唯一id将消费者注册到消费者组里：
 	// 为了生成唯一id，将使用xid库
-	uniqueID := xid.New().String()
+	uniqueID := r.random.Xid()
 	r.log.Info("生成唯一ID", "id", uniqueID)
 
 	var entries []redis.XStream

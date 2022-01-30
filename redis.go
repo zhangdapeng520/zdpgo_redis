@@ -4,32 +4,28 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/zhangdapeng520/zdpgo_random"
 	"github.com/zhangdapeng520/zdpgo_zap"
+	"sync"
 )
 
 // Redis 操作redis的核心对象
 type Redis struct {
-	db     *redis.Client  // redis连接对象
-	log    *zdpgo_zap.Zap // 日志对象
-	config *RedisConfig   // 配置对象
+	db     *redis.Client        // redis连接对象
+	log    *zdpgo_zap.Zap       // 日志对象
+	config *RedisConfig         // 配置对象
+	random *zdpgo_random.Random // 生成随机数据的核心对象
+	lock   sync.Mutex           // 互斥锁对象
 }
 
 // New 创建Redis操作对象
 func New(config RedisConfig) *Redis {
 	r := Redis{}
 
-	// 初始化日志
+	// 初始化配置
 	if config.LogFilePath == "" {
 		config.LogFilePath = "zdpgo_redis.log"
 	}
-	r.log = zdpgo_zap.New(zdpgo_zap.ZapConfig{
-		Debug:        config.Debug,       // 是否为debug模式
-		OpenGlobal:   true,               // 是否开启全局日志
-		OpenFileName: true,               // 是否输出文件名和行号
-		LogFilePath:  config.LogFilePath, // 日志路径
-	})
-
-	// 初始化配置
 	if config.Host == "" {
 		config.Host = "127.0.0.1"
 	}
@@ -52,6 +48,28 @@ func New(config RedisConfig) *Redis {
 		PoolSize: config.PoolSize,                                // 连接池中的连接个数
 	})
 	r.db = rdb
+
+	// 初始化日志
+	go func(r *Redis) {
+		r.lock.Lock()
+		r.log = zdpgo_zap.New(zdpgo_zap.ZapConfig{
+			Debug:        config.Debug,       // 是否为debug模式
+			OpenGlobal:   true,               // 是否开启全局日志
+			OpenFileName: true,               // 是否输出文件名和行号
+			LogFilePath:  config.LogFilePath, // 日志路径
+		})
+		r.lock.Unlock()
+	}(&r)
+
+	// 初始化随机数
+	go func(r *Redis) {
+		r.lock.Lock()
+		r.random = zdpgo_random.New(zdpgo_random.RandomConfig{
+			Debug:       r.config.Debug,
+			LogFilePath: r.config.LogFilePath,
+		})
+		r.lock.Unlock()
+	}(&r)
 
 	return &r
 }

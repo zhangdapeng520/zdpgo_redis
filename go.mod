@@ -6,6 +6,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/rs/xid v1.3.0
 	github.com/zhangdapeng520/zdpgo_zap v0.1.0
+	github.com/zhangdapeng520/zdpgo_random v0.1.0
 )
 
 require (
@@ -17,3 +18,4 @@ require (
 )
 
 replace github.com/zhangdapeng520/zdpgo_zap v0.1.0 => ../zdpgo_zap
+replace github.com/zhangdapeng520/zdpgo_random v0.1.0 => ../zdpgo_random
