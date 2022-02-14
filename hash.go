@@ -2,9 +2,13 @@ package zdpgo_redis
 
 import "context"
 
-// 根据键设置hash的值
-func (r *Redis) HSet(key, field string, value interface{}) {
-	r.db.HSet(context.Background(), key, field, value)
+// HSet 根据键设置hash的值
+func (r *Redis) HSet(key string, values ...interface{}) error {
+	err := r.db.HSet(context.Background(), key, values...).Err()
+	if err != nil {
+		r.log.Error("HSet 设置hash值失败", "error", err.Error())
+	}
+	return err
 }
 
 // HGet 根据key和field字段，查询field字段的值
@@ -16,7 +20,7 @@ func (r *Redis) HGet(key, field string) (string, error) {
 	return result, err
 }
 
-// 批量获取hash键对应的值
+// HMGet 批量获取hash键对应的值
 func (r *Redis) HMGet(key string, fields ...string) ([]interface{}, error) {
 	result, err := r.db.HMGet(context.Background(), key, fields...).Result()
 	if err != nil {
@@ -25,9 +29,22 @@ func (r *Redis) HMGet(key string, fields ...string) ([]interface{}, error) {
 	return result, err
 }
 
-// 批量添加hash键值
-func (r *Redis) HMSet(key string, fieldValues ...interface{}) {
-	r.db.HMSet(context.Background(), key, fieldValues...)
+// HMSet 批量添加hash键值
+func (r *Redis) HMSet(key string, fieldValues ...interface{}) error {
+	err := r.db.HMSet(context.Background(), key, fieldValues...).Err()
+	if err != nil {
+		r.log.Error("HMSet 设置hash值失败", "error", err.Error())
+	}
+	return err
+}
+
+// HSetNX 如果字段不存在才设置hash值
+func (r *Redis) HSetNX(key string, field string, value interface{}) error {
+	err := r.db.HSetNX(context.Background(), key, field, value).Err()
+	if err != nil {
+		r.log.Error("HMSet 设置hash值失败", "error", err.Error())
+	}
+	return err
 }
 
 // HIncrBy 根据key和field字段，累加数值。
@@ -39,9 +56,22 @@ func (r *Redis) HIncrBy(key string, field string, value int64) error {
 	return err
 }
 
-// 让hash的指定字段自增1
-func (r *Redis) HIncr(key string, field string) {
-	r.db.HIncrBy(context.Background(), key, field, 1)
+// HIncrByFloat 增长指定的浮点数
+func (r *Redis) HIncrByFloat(key string, field string, value float64) error {
+	err := r.db.HIncrByFloat(context.Background(), key, field, value).Err()
+	if err != nil {
+		r.log.Error("HIncrByFloat 累加数值失败", "error", err.Error())
+	}
+	return err
+}
+
+// HIncr 让hash的指定字段自增1
+func (r *Redis) HIncr(key string, field string) error {
+	err := r.db.HIncrBy(context.Background(), key, field, 1).Err()
+	if err != nil {
+		r.log.Error("字段自增失败", "error", err.Error())
+	}
+	return err
 }
 
 // HExists 检测hash字段名是否存在。
@@ -62,7 +92,7 @@ func (r *Redis) HDel(key string, fields ...string) error {
 	return err
 }
 
-// 获取hash的字段个数
+// HLen 获取hash的字段个数
 func (r *Redis) HLen(key string) (int64, error) {
 	result, err := r.db.HLen(context.Background(), key).Result()
 	if err != nil {
@@ -71,7 +101,7 @@ func (r *Redis) HLen(key string) (int64, error) {
 	return result, err
 }
 
-// 获取hash的所有键
+// HKeys 获取hash的所有键
 func (r *Redis) HKeys(key string) ([]string, error) {
 	result, err := r.db.HKeys(context.Background(), key).Result()
 	if err != nil {
@@ -80,7 +110,7 @@ func (r *Redis) HKeys(key string) ([]string, error) {
 	return result, err
 }
 
-// 获取hash所有的值
+// HVals 获取hash所有的值
 func (r *Redis) HVals(key string) ([]string, error) {
 	result, err := r.db.HVals(context.Background(), key).Result()
 	if err != nil {

@@ -22,7 +22,10 @@ func TestRedis_MGet(t *testing.T) {
 
 func TestRedis_MSet(t *testing.T) {
 	r := prepareRedis()
-	r.MSet("k1", 1, "k2", 2.2, "k3", true)
+	err := r.MSet("k1", 1, "k2", 2.2, "k3", true)
+	if err != nil {
+		t.Error(err)
+	}
 	fmt.Println(r.MGet("k1", "k2", "k3"))
 }
 
@@ -44,7 +47,10 @@ func TestRedis_Del(t *testing.T) {
 	r := prepareRedis()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
-	r.Del("age")
+	err := r.Del("age")
+	if err != nil {
+		t.Error(err)
+	}
 	fmt.Println(r.Get("age"))
 }
 
@@ -52,7 +58,10 @@ func TestRedis_Expire(t *testing.T) {
 	r := prepareRedis()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
-	r.Expire("age", time.Second*3)
+	err := r.Expire("age", time.Second*3)
+	if err != nil {
+		t.Error(err)
+	}
 	fmt.Println(r.Get("age"))
 	time.Sleep(time.Second * 3)
 	fmt.Println(r.Get("age"))

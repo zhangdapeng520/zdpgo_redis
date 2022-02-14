@@ -9,7 +9,10 @@ func prepareRedis() *Redis {
 	r := New(RedisConfig{
 		Host: "localhost",
 	})
-	return r
+	if r.Status() {
+		return r
+	}
+	return nil
 }
 
 // 测试新建redis

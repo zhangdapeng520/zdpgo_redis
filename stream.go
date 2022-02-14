@@ -28,6 +28,7 @@ func (r *Redis) PubStream(config PubStreamConfig) error {
 	return err
 }
 
+// SubStream 订阅流
 func (r *Redis) SubStream(config SubStreamConfig) (err error) {
 	// 边界条件
 	if config.HandStreamFunc == nil {

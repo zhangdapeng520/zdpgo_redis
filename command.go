@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-// 执行Redis命令
+// Execute 执行Redis命令
 func (r *Redis) Execute(args ...interface{}) (string, error) {
 	val, err := r.db.Do(context.Background(), args...).Text()
 	r.log.Info(val, err)

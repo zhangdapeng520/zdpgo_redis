@@ -7,11 +7,7 @@ import (
 )
 
 func TestRedis_PubStream(t *testing.T) {
-	r := New(RedisConfig{
-		Host:  "192.168.33.101",
-		Port:  6379,
-		Debug: true,
-	})
+	r := prepareRedis()
 
 	for i := 0; i < 3000; i++ {
 		values := map[string]interface{}{
@@ -27,11 +23,7 @@ func TestRedis_PubStream(t *testing.T) {
 }
 
 func TestRedis_SubStream(t *testing.T) {
-	r := New(RedisConfig{
-		Host:  "192.168.33.101",
-		Port:  6379,
-		Debug: true,
-	})
+	r := prepareRedis()
 	r.SubStream(SubStreamConfig{
 		Subject:           "test",
 		ConsumerGroupName: "test_group",
