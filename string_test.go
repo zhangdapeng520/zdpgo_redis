@@ -3,6 +3,7 @@ package zdpgo_redis
 import (
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestRedis_SetGet(t *testing.T) {
@@ -19,17 +20,41 @@ func TestRedis_MGet(t *testing.T) {
 	fmt.Println(r.MGet("username", "age", "gender"))
 }
 
+func TestRedis_MSet(t *testing.T) {
+	r := prepareRedis()
+	r.MSet("k1", 1, "k2", 2.2, "k3", true)
+	fmt.Println(r.MGet("k1", "k2", "k3"))
+}
+
 func TestRedis_AddSub(t *testing.T) {
 	r := prepareRedis()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
-	r.Add1("age")
+	r.Incr("age")
 	fmt.Println(r.Get("age"))
-	r.AddN("age", 3)
+	r.IncrBy("age", 3)
 	fmt.Println(r.Get("age"))
-	r.Sub1("age")
+	r.Decr("age")
 	fmt.Println(r.Get("age"))
-	r.SubN("age", 3)
+	r.DecrBy("age", 3)
+	fmt.Println(r.Get("age"))
+}
+
+func TestRedis_Del(t *testing.T) {
+	r := prepareRedis()
+	r.Set("age", 22)
+	fmt.Println(r.Get("age"))
+	r.Del("age")
+	fmt.Println(r.Get("age"))
+}
+
+func TestRedis_Expire(t *testing.T) {
+	r := prepareRedis()
+	r.Set("age", 22)
+	fmt.Println(r.Get("age"))
+	r.Expire("age", time.Second*3)
+	fmt.Println(r.Get("age"))
+	time.Sleep(time.Second * 3)
 	fmt.Println(r.Get("age"))
 }
 

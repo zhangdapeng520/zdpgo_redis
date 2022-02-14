@@ -7,7 +7,7 @@ import (
 
 func prepareRedis() *Redis {
 	r := New(RedisConfig{
-		Host: "192.168.33.101",
+		Host: "localhost",
 	})
 	return r
 }

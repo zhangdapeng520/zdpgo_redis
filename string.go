@@ -51,29 +51,56 @@ func (r *Redis) MGet(keys ...string) ([]interface{}, error) {
 	return result, err
 }
 
-// Add1 自增1
-func (r *Redis) Add1(key string) {
+// MSet 同时获取多个键对应的值
+func (r *Redis) MSet(kvs ...interface{}) error {
+	_, err := r.db.MSet(context.Background(), kvs...).Result()
+	if err != nil {
+		r.log.Error("根据多个键同时获取值失败：", err)
+	}
+	return err
+}
+
+// Incr 自增1
+func (r *Redis) Incr(key string) {
 	r.db.Incr(context.Background(), key)
 }
 
-// AddN 自增n
-func (r *Redis) AddN(key string, n int64) {
+// IncrBy 自增n
+func (r *Redis) IncrBy(key string, n int64) {
 	r.db.IncrBy(context.Background(), key, n)
 }
 
-// Sub1 自减1
-func (r *Redis) Sub1(key string) {
+// Decr 自减1
+func (r *Redis) Decr(key string) {
 	r.db.Decr(context.Background(), key)
 }
 
-// SubN 自减n
-func (r *Redis) SubN(key string, n int64) {
+// DecrBy 自减n
+func (r *Redis) DecrBy(key string, n int64) {
 	r.db.DecrBy(context.Background(), key, n)
 }
 
 // Append 追加字符串
 func (r *Redis) Append(key string, value string) {
 	r.db.Append(context.Background(), key, value)
+}
+
+// Del 删除键
+func (r *Redis) Del(keys ...string) error {
+	err := r.db.Del(context.Background(), keys...).Err()
+	if err != nil {
+		r.log.Error("删除数据失败", "keys", keys)
+	}
+	return err
+}
+
+// Expire 设置过期时间·
+func (r *Redis) Expire(key string, expire time.Duration) error {
+	err := r.db.Expire(context.Background(), key, expire).Err()
+	if err != nil {
+		r.log.Error("设置过期时间失败")
+	}
+	return err
 }
 
 // Substr 截取字符串

@@ -1,7 +1,6 @@
 package zdpgo_redis
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -11,7 +10,6 @@ func TestRedis_NewRedSync(t *testing.T) {
 		Port:  6379,
 		Debug: true,
 	})
-	fmt.Println(r, r.Status())
 
 	mutex := r.NewRedSync("myglobalmutex")
 	if err := mutex.Lock(); err != nil {

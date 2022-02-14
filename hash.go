@@ -7,11 +7,11 @@ func (r *Redis) HSet(key, field string, value interface{}) {
 	r.db.HSet(context.Background(), key, field, value)
 }
 
-// 根据键获取hash的值
+// HGet 根据key和field字段，查询field字段的值
 func (r *Redis) HGet(key, field string) (string, error) {
 	result, err := r.db.HGet(context.Background(), key, field).Result()
 	if err != nil {
-		r.log.Error("返回名称为key的hash中field对应的value失败：", err)
+		r.log.Error("HGet 返回名称为key的hash中field对应的value失败", "error", err)
 	}
 	return result, err
 }
@@ -20,7 +20,7 @@ func (r *Redis) HGet(key, field string) (string, error) {
 func (r *Redis) HMGet(key string, fields ...string) ([]interface{}, error) {
 	result, err := r.db.HMGet(context.Background(), key, fields...).Result()
 	if err != nil {
-		r.log.Error("批量获取hash的属性值失败：", err)
+		r.log.Error("HMGet 批量获取hash的属性值失败", "error", err)
 	}
 	return result, err
 }
@@ -30,9 +30,13 @@ func (r *Redis) HMSet(key string, fieldValues ...interface{}) {
 	r.db.HMSet(context.Background(), key, fieldValues...)
 }
 
-// 让hash的指定字段自增n
-func (r *Redis) HIncrBy(key string, field string, value int64) {
-	r.db.HIncrBy(context.Background(), key, field, value)
+// HIncrBy 根据key和field字段，累加数值。
+func (r *Redis) HIncrBy(key string, field string, value int64) error {
+	err := r.db.HIncrBy(context.Background(), key, field, value).Err()
+	if err != nil {
+		r.log.Error("HIncrBy 累加数值失败", "error", err.Error())
+	}
+	return err
 }
 
 // 让hash的指定字段自增1
@@ -40,7 +44,7 @@ func (r *Redis) HIncr(key string, field string) {
 	r.db.HIncrBy(context.Background(), key, field, 1)
 }
 
-// 判断hash的指定字段是否存在
+// HExists 检测hash字段名是否存在。
 func (r *Redis) HExists(key string, field string) (bool, error) {
 	result, err := r.db.HExists(context.Background(), key, field).Result()
 	if err != nil {
@@ -49,9 +53,13 @@ func (r *Redis) HExists(key string, field string) (bool, error) {
 	return result, err
 }
 
-// 删除hash的指定字段
-func (r *Redis) HDel(key string, field string) {
-	r.db.HDel(context.Background(), key, field)
+// HDel 根据key和字段名，删除hash字段，支持批量删除hash字段
+func (r *Redis) HDel(key string, fields ...string) error {
+	err := r.db.HDel(context.Background(), key, fields...).Err()
+	if err != nil {
+		r.log.Error("HDel 删除数据失败", "error", err.Error())
+	}
+	return err
 }
 
 // 获取hash的字段个数
@@ -81,7 +89,7 @@ func (r *Redis) HVals(key string) ([]string, error) {
 	return result, err
 }
 
-// 获取hash的所有键值对
+// HGetAll 根据key查询所有字段和值
 func (r *Redis) HGetAll(key string) (map[string]string, error) {
 	result, err := r.db.HGetAll(context.Background(), key).Result()
 	if err != nil {
