@@ -2,7 +2,7 @@ package zdpgo_redis
 
 import (
 	"context"
-	"github.com/go-redis/redis/v8"
+	"github.com/zhangdapeng520/zdpgo_redis/libs/redis"
 )
 
 // Z 表示已排序的集合成员

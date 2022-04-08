@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-redis/redis/v8"
+	"github.com/zhangdapeng520/zdpgo_redis/libs/redis"
 )
 
 // Get 根据键获取值

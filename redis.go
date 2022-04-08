@@ -3,18 +3,15 @@ package zdpgo_redis
 import (
 	"context"
 	"fmt"
-	"github.com/go-redis/redis/v8"
-	"github.com/go-redsync/redsync/v4"
+	"github.com/zhangdapeng520/zdpgo_redis/libs/redis"
 	"sync"
 )
 
 // Redis 操作redis的核心对象
 type Redis struct {
-	db           *redis.Client    // redis连接对象
-	config       *RedisConfig     // 配置对象
-	lock         sync.Mutex       // 互斥锁对象
-	redSync      *redsync.Redsync // redis分布式锁构造器
-	redSyncMutex *redsync.Mutex   // redis分布式锁对象
+	db     *redis.Client // redis连接对象
+	config *RedisConfig  // 配置对象
+	lock   sync.Mutex    // 互斥锁对象
 }
 
 // New 创建Redis操作对象
