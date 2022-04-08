@@ -152,7 +152,7 @@ func (r *Reader) ReadString() (string, error) {
 	case IntReply:
 		return string(line[1:]), nil
 	default:
-		return "", fmt.Errorf("redis: can't parse reply=%.100q reading string", line)
+		return "", fmt.Errorf("redis: can't parse reply=%.100q reading rstring", line)
 	}
 }
 
@@ -282,7 +282,7 @@ func (r *Reader) readTmpBytesReply() ([]byte, error) {
 	case StatusReply:
 		return line[1:], nil
 	default:
-		return nil, fmt.Errorf("redis: can't parse string reply: %.100q", line)
+		return nil, fmt.Errorf("redis: can't parse rstring reply: %.100q", line)
 	}
 }
 

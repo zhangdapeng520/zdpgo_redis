@@ -61,7 +61,7 @@ func RandomSlot() int {
 }
 
 // Slot returns a consistent slot number between 0 and 16383
-// for any given string key.
+// for any given rstring key.
 func Slot(key string) int {
 	if key == "" {
 		return RandomSlot()

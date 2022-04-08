@@ -7,12 +7,12 @@ import (
 	"unsafe"
 )
 
-// BytesToString converts byte slice to string.
+// BytesToString converts byte slice to rstring.
 func BytesToString(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
 }
 
-// StringToBytes converts string to byte slice.
+// StringToBytes converts rstring to byte slice.
 func StringToBytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(
 		&struct {

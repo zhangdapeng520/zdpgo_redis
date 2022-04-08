@@ -6,7 +6,7 @@ import (
 )
 
 // ErrorFormatFunc is a function callback that is called by Error to
-// turn the list of errors into a string.
+// turn the list of errors into a rstring.
 type ErrorFormatFunc func([]error) string
 
 // ListFormatFunc is a basic formatter that outputs the number of errors

@@ -1,4 +1,4 @@
-package zdpgo_redis
+package rstring
 
 import (
 	"fmt"
@@ -6,14 +6,17 @@ import (
 	"time"
 )
 
+func getString() *String {
+	return NewString("10.1.3.52", 6379, "", "", 0, 20)
+}
 func TestRedis_SetGet(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("username", "张大鹏")
 	fmt.Println(r.Get("username"))
 }
 
 func TestRedis_MGet(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("username", "张大鹏")
 	r.Set("age", 22)
 	r.Set("gender", "male")
@@ -21,7 +24,7 @@ func TestRedis_MGet(t *testing.T) {
 }
 
 func TestRedis_MSet(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	err := r.MSet("k1", 1, "k2", 2.2, "k3", true)
 	if err != nil {
 		t.Error(err)
@@ -30,7 +33,7 @@ func TestRedis_MSet(t *testing.T) {
 }
 
 func TestRedis_AddSub(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
 	r.Incr("age")
@@ -44,7 +47,7 @@ func TestRedis_AddSub(t *testing.T) {
 }
 
 func TestRedis_Del(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
 	err := r.Del("age")
@@ -55,7 +58,7 @@ func TestRedis_Del(t *testing.T) {
 }
 
 func TestRedis_Expire(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
 	err := r.Expire("age", time.Second*3)
@@ -68,7 +71,7 @@ func TestRedis_Expire(t *testing.T) {
 }
 
 func TestRedis_AppendSubstr(t *testing.T) {
-	r := prepareRedis()
+	r := getString()
 	r.Set("test", "a")
 	r.Append("test", "b")
 	r.Append("test", "c")

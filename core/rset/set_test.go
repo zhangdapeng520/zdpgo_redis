@@ -1,12 +1,15 @@
-package zdpgo_redis
+package rset
 
 import (
 	"fmt"
 	"testing"
 )
 
+func getSet() *Set {
+	return NewSet("10.1.3.52", 6379, "", "", 0, 20)
+}
 func TestRedis_SAdd(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
@@ -20,9 +23,8 @@ func TestRedis_SAdd(t *testing.T) {
 }
 
 func TestRedis_SCard(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
@@ -35,9 +37,8 @@ func TestRedis_SCard(t *testing.T) {
 }
 
 func TestRedis_SIsMember(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
@@ -50,15 +51,13 @@ func TestRedis_SIsMember(t *testing.T) {
 }
 
 func TestRedis_SInter(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
 	key2 := "set2"
-	r.Del(key2)
 	r.SAdd(key2, "a1")
 	r.SAdd(key2, "b")
 	r.SAdd(key2, "c1")
@@ -71,15 +70,13 @@ func TestRedis_SInter(t *testing.T) {
 }
 
 func TestRedis_SInterStore(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
 	key2 := "set2"
-	r.Del(key2)
 	r.SAdd(key2, "a1")
 	r.SAdd(key2, "b")
 	r.SAdd(key2, "c1")
@@ -98,15 +95,13 @@ func TestRedis_SInterStore(t *testing.T) {
 }
 
 func TestRedis_SUnion(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
 	key2 := "set2"
-	r.Del(key2)
 	r.SAdd(key2, "a1")
 	r.SAdd(key2, "b")
 	r.SAdd(key2, "c1")
@@ -119,15 +114,13 @@ func TestRedis_SUnion(t *testing.T) {
 }
 
 func TestRedis_SDiff(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
 	key2 := "set2"
-	r.Del(key2)
 	r.SAdd(key2, "a1")
 	r.SAdd(key2, "b")
 	r.SAdd(key2, "c1")
@@ -140,15 +133,13 @@ func TestRedis_SDiff(t *testing.T) {
 }
 
 func TestRedis_SDiffStore(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
 	key2 := "set2"
-	r.Del(key2)
 	r.SAdd(key2, "a1")
 	r.SAdd(key2, "b")
 	r.SAdd(key2, "c1")
@@ -167,9 +158,8 @@ func TestRedis_SDiffStore(t *testing.T) {
 }
 
 func TestRedis_SPop(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
@@ -182,9 +172,8 @@ func TestRedis_SPop(t *testing.T) {
 }
 
 func TestRedis_SRem(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
@@ -200,9 +189,8 @@ func TestRedis_SRem(t *testing.T) {
 }
 
 func TestRedis_SRandMember(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
@@ -218,9 +206,8 @@ func TestRedis_SRandMember(t *testing.T) {
 }
 
 func TestRedis_SRandMemberN(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
@@ -236,9 +223,8 @@ func TestRedis_SRandMemberN(t *testing.T) {
 }
 
 func TestRedis_SMembersMap(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
@@ -254,9 +240,8 @@ func TestRedis_SMembersMap(t *testing.T) {
 }
 
 func TestRedis_SMove(t *testing.T) {
-	r := prepareRedis()
+	r := getSet()
 	key := "set1"
-	r.Del(key)
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
 	r.SAdd(key, "a")
@@ -264,7 +249,6 @@ func TestRedis_SMove(t *testing.T) {
 	r.SAdd(key, "b")
 	r.SAdd(key, "c")
 
-	r.Del("set2")
 	rem, err := r.SMove(key, "set2", "a")
 	if err != nil {
 		t.Error(err)

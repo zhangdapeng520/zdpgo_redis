@@ -5,7 +5,7 @@ import (
 )
 
 func prepareRedis() *Redis {
-	r := New(RedisConfig{
+	r := New(Config{
 		Host: "10.1.3.52",
 	})
 	if r.Status() {

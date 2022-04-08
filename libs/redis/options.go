@@ -346,7 +346,7 @@ func (o *queryOptions) bool(name string) bool {
 		return false
 	default:
 		if o.err == nil {
-			o.err = fmt.Errorf("redis: invalid %s boolean: expected true/false/1/0 or an empty string, got %q", name, s)
+			o.err = fmt.Errorf("redis: invalid %s boolean: expected true/false/1/0 or an empty rstring, got %q", name, s)
 		}
 		return false
 	}

@@ -42,7 +42,7 @@ func Wrap(outer, inner error) error {
 // `fmt.Errorf` to wrap an error. If you're using `fmt.Errorf` to wrap
 // errors, you should replace it with this.
 //
-// format is the format of the error message. The string '{{err}}' will
+// format is the format of the error message. The rstring '{{err}}' will
 // be replaced with the original error message.
 //
 // Deprecated: Use fmt.Errorf()

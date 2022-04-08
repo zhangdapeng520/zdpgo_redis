@@ -1,12 +1,15 @@
-package zdpgo_redis
+package rlist
 
 import (
 	"fmt"
 	"testing"
 )
 
+func getList() *List {
+	return NewList("10.1.3.52", 6379, "", "", 0, 20)
+}
 func TestRedis_LPush(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	r.LPush("arr", 1, 2, 3)
 	lLen, err := r.LLen("arr")
 	if err != nil {
@@ -17,7 +20,7 @@ func TestRedis_LPush(t *testing.T) {
 }
 
 func TestRedis_LPushX(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	r.LPushX("arr1", 1, 2, 3)
 	lLen, _ := r.LLen("arr1")
 	if lLen > 0 {
@@ -28,7 +31,7 @@ func TestRedis_LPushX(t *testing.T) {
 }
 
 func TestRedis_RPush(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	r.RPush("arr", 1, 2, 3)
 	lLen, err := r.LLen("arr")
 	if err != nil {
@@ -39,7 +42,7 @@ func TestRedis_RPush(t *testing.T) {
 }
 
 func TestRedis_RPushX(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	r.RPushX("arr3", 1, 2, 3)
 	lLen, err := r.LLen("arr3")
 	if err != nil {
@@ -53,7 +56,7 @@ func TestRedis_RPushX(t *testing.T) {
 }
 
 func TestRedis_LRange(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr4"
 	r.RPush(key, 1, 2, 3)
 	lRange, err := r.LRange(key, 0, -1)
@@ -64,7 +67,7 @@ func TestRedis_LRange(t *testing.T) {
 }
 
 func TestRedis_LIndex(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr5"
 	r.RPush(key, 1, 2, 3)
 	value, err := r.LIndex(key, 0)
@@ -75,7 +78,7 @@ func TestRedis_LIndex(t *testing.T) {
 }
 
 func TestRedis_LTrim(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr6"
 	r.RPush(key, 1, 2, 3, 4, 5, 6)
 	value, err := r.LTrim(key, 0, 3)
@@ -102,7 +105,7 @@ func TestRedis_LTrim(t *testing.T) {
 }
 
 func TestRedis_LSet(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr7"
 	r.RPush(key, 1, 2, 3, 4, 5, 6)
 
@@ -119,9 +122,8 @@ func TestRedis_LSet(t *testing.T) {
 }
 
 func TestRedis_LInsertBefore(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr9"
-	r.Del(key)
 	r.RPush(key, 1, 2, 3, 4, 5, 6)
 
 	err := r.LInsertBefore(key, 3, "333")
@@ -149,9 +151,8 @@ func TestRedis_LInsertBefore(t *testing.T) {
 }
 
 func TestRedis_LInsertAfter(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr9"
-	r.Del(key)
 	r.RPush(key, 1, 2, 3, 4, 5, 6)
 
 	err := r.LInsertAfter(key, 3, "333")
@@ -179,9 +180,8 @@ func TestRedis_LInsertAfter(t *testing.T) {
 }
 
 func TestRedis_LPop(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr"
-	r.Del(key)
 	r.RPush(key, "a", "b", "c")
 
 	pop, err := r.LPop(key)
@@ -196,9 +196,8 @@ func TestRedis_LPop(t *testing.T) {
 }
 
 func TestRedis_RPop(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr"
-	r.Del(key)
 	r.RPush(key, "a", "b", "c")
 
 	pop, err := r.RPop(key)
@@ -213,9 +212,8 @@ func TestRedis_RPop(t *testing.T) {
 }
 
 func TestRedis_LRem(t *testing.T) {
-	r := prepareRedis()
+	r := getList()
 	key := "arr"
-	r.Del(key)
 	r.RPush(key, "a", "b", "c", "c", "c", "c", "c", "c", "c")
 
 	err := r.LRem(key, -7, "b")

@@ -845,7 +845,7 @@ func (cmd *BoolCmd) readReply(rd *proto.Reader) error {
 		cmd.val = v == "OK"
 		return nil
 	default:
-		return fmt.Errorf("got %T, wanted int64 or string", v)
+		return fmt.Errorf("got %T, wanted int64 or rstring", v)
 	}
 }
 
@@ -2849,7 +2849,7 @@ func newGeoLocationSliceParser(q *GeoRadiusQuery) proto.MultiBulkParse {
 				// TODO: avoid copying
 				locs = append(locs, *vv)
 			default:
-				return nil, fmt.Errorf("got %T, expected string or *GeoLocation", v)
+				return nil, fmt.Errorf("got %T, expected rstring or *GeoLocation", v)
 			}
 		}
 		return locs, nil

@@ -821,8 +821,8 @@ func (c cmdable) MGet(ctx context.Context, keys ...string) *SliceCmd {
 
 // MSet is like Set but accepts multiple values:
 //   - MSet("key1", "value1", "key2", "value2")
-//   - MSet([]string{"key1", "value1", "key2", "value2"})
-//   - MSet(map[string]interface{}{"key1": "value1", "key2": "value2"})
+//   - MSet([]rstring{"key1", "value1", "key2", "value2"})
+//   - MSet(map[rstring]interface{}{"key1": "value1", "key2": "value2"})
 func (c cmdable) MSet(ctx context.Context, values ...interface{}) *StatusCmd {
 	args := make([]interface{}, 1, 1+len(values))
 	args[0] = "mset"
@@ -834,8 +834,8 @@ func (c cmdable) MSet(ctx context.Context, values ...interface{}) *StatusCmd {
 
 // MSetNX is like SetNX but accepts multiple values:
 //   - MSetNX("key1", "value1", "key2", "value2")
-//   - MSetNX([]string{"key1", "value1", "key2", "value2"})
-//   - MSetNX(map[string]interface{}{"key1": "value1", "key2": "value2"})
+//   - MSetNX([]rstring{"key1", "value1", "key2", "value2"})
+//   - MSetNX(map[rstring]interface{}{"key1": "value1", "key2": "value2"})
 func (c cmdable) MSetNX(ctx context.Context, values ...interface{}) *BoolCmd {
 	args := make([]interface{}, 1, 1+len(values))
 	args[0] = "msetnx"
@@ -1214,7 +1214,7 @@ func (c cmdable) HLen(ctx context.Context, key string) *IntCmd {
 }
 
 // HMGet returns the values for the specified fields in the hash stored at key.
-// It returns an interface{} to distinguish between empty string and nil value.
+// It returns an interface{} to distinguish between empty rstring and nil value.
 func (c cmdable) HMGet(ctx context.Context, key string, fields ...string) *SliceCmd {
 	args := make([]interface{}, 2+len(fields))
 	args[0] = "hmget"
@@ -1229,8 +1229,8 @@ func (c cmdable) HMGet(ctx context.Context, key string, fields ...string) *Slice
 
 // HSet accepts values in following formats:
 //   - HSet("myhash", "key1", "value1", "key2", "value2")
-//   - HSet("myhash", []string{"key1", "value1", "key2", "value2"})
-//   - HSet("myhash", map[string]interface{}{"key1": "value1", "key2": "value2"})
+//   - HSet("myhash", []rstring{"key1", "value1", "key2", "value2"})
+//   - HSet("myhash", map[rstring]interface{}{"key1": "value1", "key2": "value2"})
 //
 // Note that it requires Redis v4 for multiple field/value pairs support.
 func (c cmdable) HSet(ctx context.Context, key string, values ...interface{}) *IntCmd {
@@ -1670,8 +1670,8 @@ func (c cmdable) SUnionStore(ctx context.Context, destination string, keys ...st
 
 // XAddArgs accepts values in the following formats:
 //   - XAddArgs.Values = []interface{}{"key1", "value1", "key2", "value2"}
-//   - XAddArgs.Values = []string("key1", "value1", "key2", "value2")
-//   - XAddArgs.Values = map[string]interface{}{"key1": "value1", "key2": "value2"}
+//   - XAddArgs.Values = []rstring("key1", "value1", "key2", "value2")
+//   - XAddArgs.Values = map[rstring]interface{}{"key1": "value1", "key2": "value2"}
 //
 // Note that map will not preserve the order of key-value pairs.
 // MaxLen/MaxLenApprox and MinID are in conflict, only one of them can be used.

@@ -1,3 +1,4 @@
+//go:build !appengine
 // +build !appengine
 
 // This file encapsulates usage of unsafe.
@@ -15,7 +16,7 @@ import (
 // If that happens, even if we keep these functions they can be replaced with
 // the trivial safe code.
 
-// NOTE: The usual way of doing an unsafe string-to-[]byte conversion is:
+// NOTE: The usual way of doing an unsafe rstring-to-[]byte conversion is:
 //
 //   var b []byte
 //   bh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
@@ -50,7 +51,7 @@ func (d *Digest) WriteString(s string) (n int, err error) {
 }
 
 // sliceHeader is similar to reflect.SliceHeader, but it assumes that the layout
-// of the first two words is the same as the layout of a string.
+// of the first two words is the same as the layout of a rstring.
 type sliceHeader struct {
 	s   string
 	cap int
