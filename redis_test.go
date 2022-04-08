@@ -1,13 +1,12 @@
 package zdpgo_redis
 
 import (
-	"fmt"
 	"testing"
 )
 
 func prepareRedis() *Redis {
 	r := New(RedisConfig{
-		Host: "localhost",
+		Host: "10.1.3.52",
 	})
 	if r.Status() {
 		return r
@@ -18,5 +17,5 @@ func prepareRedis() *Redis {
 // 测试新建redis
 func TestRedis_New(t *testing.T) {
 	r := prepareRedis()
-	fmt.Println(r.Status())
+	t.Log(r.Status())
 }

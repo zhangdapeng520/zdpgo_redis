@@ -54,62 +54,41 @@ func (r *Redis) ZCard(key string) (int64, error) {
 // ZRange 取出一段分数
 func (r *Redis) ZRange(key string, start int64, end int64) ([]string, error) {
 	result, err := r.db.ZRange(context.Background(), key, start, end).Result()
-	if err != nil {
-		r.log.Error("ZRange 取出数据失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZIncrBy 增加分数
 func (r *Redis) ZIncrBy(key string, score float64, member string) (float64, error) {
 	result, err := r.db.ZIncrBy(context.Background(), key, score, member).Result()
-	if err != nil {
-		r.log.Error("ZRange 取出数据失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZCount 统计某个分数段内的元素个数
 func (r *Redis) ZCount(key string, min, max string) (int64, error) {
 	result, err := r.db.ZCount(context.Background(), key, min, max).Result()
-	if err != nil {
-		r.log.Error("ZCount 取出数据失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZScore 查询集合元素的分数
 func (r *Redis) ZScore(key string, member string) (float64, error) {
 	result, err := r.db.ZScore(context.Background(), key, member).Result()
-	if err != nil {
-		r.log.Error("ZScore 查询集合元素的分数失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZRank 根据元素名，查询集合元素在集合中的排名，从0开始算，集合元素按分数从小到大排序
 func (r *Redis) ZRank(key string, member string) (int64, error) {
 	result, err := r.db.ZRank(context.Background(), key, member).Result()
-	if err != nil {
-		r.log.Error("ZRank 查询排名失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZRem 删除集合元素
 func (r *Redis) ZRem(key string, members ...interface{}) (int64, error) {
 	result, err := r.db.ZRem(context.Background(), key, members...).Result()
-	if err != nil {
-		r.log.Error("ZRank 删除集合元素失败", "error", err.Error())
-	}
 	return result, err
 }
 
 // ZRemRangeByRank 根据排名删除分数，支持按负数排名
 func (r *Redis) ZRemRangeByRank(key string, start, stop int64) (int64, error) {
 	result, err := r.db.ZRemRangeByRank(context.Background(), key, start, stop).Result()
-	if err != nil {
-		r.log.Error("ZRemRangeByRank 根据排名删除分数失败", "error", err.Error())
-	}
 	return result, err
 }

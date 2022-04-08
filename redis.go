@@ -5,20 +5,16 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"github.com/go-redsync/redsync/v4"
-	"github.com/zhangdapeng520/zdpgo_random"
-	"github.com/zhangdapeng520/zdpgo_zap"
 	"sync"
 )
 
 // Redis 操作redis的核心对象
 type Redis struct {
-	db           *redis.Client        // redis连接对象
-	log          *zdpgo_zap.Zap       // 日志对象
-	config       *RedisConfig         // 配置对象
-	random       *zdpgo_random.Random // 生成随机数据的核心对象
-	lock         sync.Mutex           // 互斥锁对象
-	redSync      *redsync.Redsync     // redis分布式锁构造器
-	redSyncMutex *redsync.Mutex       // redis分布式锁对象
+	db           *redis.Client    // redis连接对象
+	config       *RedisConfig     // 配置对象
+	lock         sync.Mutex       // 互斥锁对象
+	redSync      *redsync.Redsync // redis分布式锁构造器
+	redSyncMutex *redsync.Mutex   // redis分布式锁对象
 }
 
 // New 创建Redis操作对象
@@ -53,53 +49,13 @@ func New(config RedisConfig) *Redis {
 	})
 	r.db = rdb
 
-	// 初始化日志
-	go func(r *Redis) {
-		r.lock.Lock()
-		r.log = zdpgo_zap.New(zdpgo_zap.ZapConfig{
-			Debug:        config.Debug,       // 是否为debug模式
-			OpenGlobal:   true,               // 是否开启全局日志
-			OpenFileName: true,               // 是否输出文件名和行号
-			LogFilePath:  config.LogFilePath, // 日志路径
-		})
-		r.log.Info("尝试与redis服务建立连接", "address", address)
-		r.lock.Unlock()
-	}(&r)
-
-	// 初始化随机数
-	go func(r *Redis) {
-		r.lock.Lock()
-		r.random = zdpgo_random.New(zdpgo_random.RandomConfig{
-			Debug:       r.config.Debug,
-			LogFilePath: r.config.LogFilePath,
-		})
-		r.lock.Unlock()
-	}(&r)
-
 	return &r
-}
-
-// SetDebug 设置debug模式
-func (r *Redis) SetDebug(debug bool) {
-	r.config.Debug = debug
-	r.log = zdpgo_zap.New(zdpgo_zap.ZapConfig{
-		Debug:        r.config.Debug,       // 是否为debug模式
-		OpenGlobal:   true,                 // 是否开启全局日志
-		OpenFileName: true,                 // 是否输出文件名和行号
-		LogFilePath:  r.config.LogFilePath, // 日志路径
-	})
-}
-
-// IsDebug 是否为debug模式
-func (r *Redis) IsDebug() bool {
-	return r.config.Debug
 }
 
 // Status 查看Redis服务状态
 func (r *Redis) Status() bool {
-	pong, err := r.db.Ping(context.Background()).Result()
+	_, err := r.db.Ping(context.Background()).Result()
 	if err != nil {
-		r.log.Error("redis连接失败：", "ping", pong, "err", err)
 		return false
 	}
 	return true

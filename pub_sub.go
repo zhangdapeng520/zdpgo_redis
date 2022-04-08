@@ -21,10 +21,6 @@ func (r *Redis) Subscribe(key string) *redis.PubSub {
 // ReceiveMessage 获取消息
 func (r *Redis) ReceiveMessage(ps *redis.PubSub) (*redis.Message, error) {
 	msg, err := ps.ReceiveMessage(context.Background())
-	if err != nil {
-		r.log.Error("获取消息失败：", err)
-	}
-	// fmt.Println(msg.Channel, msg.Payload)
 	return msg, err
 }
 
@@ -32,7 +28,6 @@ func (r *Redis) ReceiveMessage(ps *redis.PubSub) (*redis.Message, error) {
 func (r *Redis) CloseSubscribe(ps *redis.PubSub) {
 	err := ps.Close()
 	if err != nil {
-		r.log.Error("关闭订阅失败：", err)
 		return
 	}
 }
