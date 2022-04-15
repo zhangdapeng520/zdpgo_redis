@@ -2,13 +2,13 @@ package zdpgo_redis
 
 // Config redis配置对象
 type Config struct {
-	Host      string // 主机地址
-	Port      int    // 端口号
-	Database  int    // 数据库
-	Username  string // 用户名
-	Password  string // 密码
-	PoolSize  int    // 连接池连接数
-	StreamTag string // 流标签
+	Host      string `yaml:"host" json:"host"`             // 主机地址
+	Port      int    `yaml:"port" json:"port"`             // 端口号
+	Database  int    `yaml:"database" json:"database"`     // 数据库
+	Username  string `yaml:"username" json:"username"`     // 用户名
+	Password  string `yaml:"password" json:"password"`     // 密码
+	PoolSize  int    `yaml:"pool_size" json:"pool_size"`   // 连接池连接数
+	StreamTag string `yaml:"stream_tag" json:"stream_tag"` // 流标签
 }
 
 // 获取默认的配置信息

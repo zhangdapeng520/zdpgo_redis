@@ -7,7 +7,7 @@ import (
 )
 
 func getString() *String {
-	return NewString("10.1.3.52", 6379, "", "", 0, 20)
+	return NewString("10.1.3.12", 6379, "", "", 0, 20)
 }
 func TestRedis_SetGet(t *testing.T) {
 	r := getString()
@@ -50,7 +50,7 @@ func TestRedis_Del(t *testing.T) {
 	r := getString()
 	r.Set("age", 22)
 	fmt.Println(r.Get("age"))
-	err := r.Del("age")
+	err := r.common.Del("age")
 	if err != nil {
 		t.Error(err)
 	}
@@ -59,9 +59,12 @@ func TestRedis_Del(t *testing.T) {
 
 func TestRedis_Expire(t *testing.T) {
 	r := getString()
-	r.Set("age", 22)
+	err := r.Set("age", 22)
+	if err != nil {
+		t.Error(err)
+	}
 	fmt.Println(r.Get("age"))
-	err := r.Expire("age", time.Second*3)
+	err = r.common.Expire("age", time.Second*3)
 	if err != nil {
 		t.Error(err)
 	}
@@ -72,7 +75,10 @@ func TestRedis_Expire(t *testing.T) {
 
 func TestRedis_AppendSubstr(t *testing.T) {
 	r := getString()
-	r.Set("test", "a")
+	err := r.Set("test", "a")
+	if err != nil {
+		t.Error(err)
+	}
 	r.Append("test", "b")
 	r.Append("test", "c")
 	r.Append("test", "d")

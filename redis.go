@@ -3,6 +3,7 @@ package zdpgo_redis
 import (
 	"context"
 	"fmt"
+	"github.com/zhangdapeng520/zdpgo_redis/core/common"
 	"github.com/zhangdapeng520/zdpgo_redis/core/rhash"
 	"github.com/zhangdapeng520/zdpgo_redis/core/rlist"
 	"github.com/zhangdapeng520/zdpgo_redis/core/rset"
@@ -16,6 +17,7 @@ type Redis struct {
 	db     *redis.Client   // redis连接对象
 	config *Config         // 配置对象
 	lock   sync.Mutex      // 互斥锁对象
+	Common *common.Common  // Redis通用操作对象
 	String *rstring.String // 操作字符串的核心对象
 	List   *rlist.List     // 操作列表的核心对象
 	Hash   *rhash.Hash     // 操作hash的核心对象
@@ -40,6 +42,14 @@ func New(config Config) *Redis {
 	r.db = rdb
 
 	// 实例化操作对象
+	r.Common = common.NewCommon(
+		config.Host,
+		config.Port,
+		config.Username,
+		config.Password,
+		config.Database,
+		config.PoolSize,
+	)
 	r.String = rstring.NewString(
 		config.Host,
 		config.Port,
