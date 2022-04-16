@@ -1,6 +1,2 @@
-github.com/zhangdapeng520/zdpgo_redis/libs/xxhash v2.1.2 h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE=
-github.com/zhangdapeng520/zdpgo_redis/libs/xxhash v2.1.2/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
-github.com/zhangdapeng520/zdpgo_redis/libs/rendezvous v0.0.0-20200823014737-9f7001d12a5f h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78=
-github.com/zhangdapeng520/zdpgo_redis/libs/rendezvous v0.0.0-20200823014737-9f7001d12a5f/go.mod h1:cuUVRXasLTGF7a8hSLbxyZXjz+1KgoB3wDUb6vlszIc=
-github.com/zhangdapeng520/zdpgo_redis/libs/errwrap v1.1.0 h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=
-github.com/zhangdapeng520/zdpgo_redis/libs/errwrap v1.1.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=
+github.com/zhangdapeng520/zdpgo_test v0.1.0 h1:VUXnng6P6tlzQADwLXONU/HdeUYtoRUjD5B7L3texnE=
+github.com/zhangdapeng520/zdpgo_test v0.1.0/go.mod h1:FZsHO6yLLfm0LQ745hwaGX2t/ifZ0i6/RTQw4Raj24k=
