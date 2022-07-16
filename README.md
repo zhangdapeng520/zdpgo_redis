@@ -1,14 +1,20 @@
 # zdpgo_redis
+
 使用Golang操作Redis的快捷工具库
 
 功能列表：
+
 - 基于redis的分布式锁
 
 ## 版本历史
-- 版本0.1.1 2022年4月16日 新增string类型的crud操作
+
+- v0.1.1 2022/04/16 新增：string类型的crud操作
+- v0.1.2 2022/07/16 优化：代码结构优化
 
 ## 使用示例
+
 ### string类型的增删改查
+
 ```go
 package main
 

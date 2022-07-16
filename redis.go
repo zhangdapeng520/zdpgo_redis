@@ -3,12 +3,12 @@ package zdpgo_redis
 import (
 	"context"
 	"fmt"
-	"github.com/zhangdapeng520/zdpgo_redis/core/common"
-	"github.com/zhangdapeng520/zdpgo_redis/core/rhash"
-	"github.com/zhangdapeng520/zdpgo_redis/core/rlist"
-	"github.com/zhangdapeng520/zdpgo_redis/core/rset"
-	"github.com/zhangdapeng520/zdpgo_redis/core/rstring"
-	"github.com/zhangdapeng520/zdpgo_redis/libs/redis"
+	"github.com/zhangdapeng520/zdpgo_redis/common"
+	"github.com/zhangdapeng520/zdpgo_redis/redis"
+	"github.com/zhangdapeng520/zdpgo_redis/rhash"
+	"github.com/zhangdapeng520/zdpgo_redis/rlist"
+	"github.com/zhangdapeng520/zdpgo_redis/rset"
+	"github.com/zhangdapeng520/zdpgo_redis/rstring"
 	"sync"
 )
 
